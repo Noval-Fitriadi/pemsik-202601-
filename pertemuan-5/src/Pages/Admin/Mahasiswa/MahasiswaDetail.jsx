@@ -1,34 +1,33 @@
-import Card from "@/Pages/Admin/Components/Card";
-import Heading from "@/Pages/Admin/Components/Heading";
-
-import { mahasiswaList } from "@/Data/Dummy";
+import { useParams, useNavigate } from "react-router-dom";
+import Card from "../Components/Card";
+import Heading from "../Components/Heading";
+import Button from "../Components/Button";
+import { mahasiswaList } from "@/data/Dummy";
 
 const MahasiswaDetail = () => {
+  const { nim } = useParams();
+  const navigate = useNavigate();
 
-  const path = window.location.pathname;
-  const nim = path.split("/").pop();
+  const data = mahasiswaList.find((m) => m.nim === nim);
 
-  const mahasiswa = mahasiswaList.find((m) => m.nim === nim);
-
-  if (!mahasiswa) {
-    return <p className="text-red-600">Data mahasiswa tidak ditemukan.</p>;
+  if (!data) {
+    return (
+      <Card>
+        <Heading as="h2">Data Mahasiswa Tidak Ditemukan</Heading>
+        <Button onClick={() => navigate("/admin/mahasiswa")}>Kembali</Button>
+      </Card>
+    );
   }
 
   return (
     <Card>
-      <Heading as="h2" className="mb-4 text-left">Detail Mahasiswa</Heading>
-      <table className="table-auto text-sm w-full">
-        <tbody>
-          <tr>
-            <td className="py-2 px-4 font-medium">NIM</td>
-            <td className="py-2 px-4">{mahasiswa.nim}</td>
-          </tr>
-          <tr>
-            <td className="py-2 px-4 font-medium">Nama</td>
-            <td className="py-2 px-4">{mahasiswa.nama}</td>
-          </tr>
-        </tbody>
-      </table>
+      <Heading as="h2">Detail Mahasiswa</Heading>
+      <div className="space-y-2 my-4">
+        <p><strong>NIM:</strong> {data.nim}</p>
+        <p><strong>Nama:</strong> {data.nama}</p>
+        {data.prodi && <p><strong>Program Studi:</strong> {data.prodi}</p>}
+      </div>
+      <Button onClick={() => navigate("/admin/mahasiswa")}>Kembali</Button>
     </Card>
   );
 };

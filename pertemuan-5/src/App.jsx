@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import AuthLayout from "./Pages/Auth/AuthLayout";
-import AdminLayout from "./Pages/Admin/AdminLayout";
-import Login from "./Pages/Auth/Login/Login";
-import DashboardPage from "./Pages/Admin/Dashboard/Dashboard"; 
-import Mahasiswa from "./Pages/Admin/Mahasiswa/Mahasiswa";
-import MahasiswaDetail from "./Pages/Admin/Mahasiswa/MahasiswaDetail";
-import ProtectedRoute from "./Pages/Auth/ProtectedRoute";
+
+// Menggunakan alias '@' agar konsisten sesuai konfigurasi vite.config.js
+import AuthLayout from "@/Pages/Auth/AuthLayout";
+import AdminLayout from "@/Pages/Admin/AdminLayout";
+import Login from "@/Pages/Auth/Login/Login";
+import DashboardPage from "@/Pages/Admin/Dashboard/Dashboard"; 
+import Mahasiswa from "@/Pages/Admin/Mahasiswa/Mahasiswa";
+import MahasiswaDetail from "@/Pages/Admin/Mahasiswa/MahasiswaDetail";
+import ProtectedRoute from "@/Pages/Auth/ProtectedRoute";
 
 export default function App() {
   return (
@@ -21,8 +23,12 @@ export default function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="mahasiswa" element={<Mahasiswa />} />
-            <Route path="mahasiswa/:nim" element={<MahasiswaDetail />} />
+            
+            {/* Nested Routes Mahasiswa sesuai standar modul Notion */}
+            <Route path="mahasiswa">
+              <Route index element={<Mahasiswa />} />
+              <Route path=":nim" element={<MahasiswaDetail />} />
+            </Route>
           </Route>
         </Route>
 
