@@ -3,9 +3,10 @@ import Card from "../components/molecules/Card";
 import Button from "../components/atoms/Button";
 import MahasiswaTable from "../components/organisms/MahasiswaTable";
 import MahasiswaModal from "../components/organisms/MahasiswaModal";
+import { confirmDelete, confirmUpdate } from "../utils/helpers/SwalHelpers";
+import { toastSuccess, toastError } from "../utils/helpers/ToastHelpers";
 
 export default function MahasiswaPage() {
-  // State
   const [mahasiswa, setMahasiswa] = useState([
     { nim: "20211001", nama: "Budi Santoso", status: true },
     { nim: "20211002", nama: "Siti Aminah", status: true },
@@ -14,15 +15,15 @@ export default function MahasiswaPage() {
   const [selectedMahasiswa, setSelectedMahasiswa] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  // Logika State
   const storeMahasiswa = (dataBaru) => {
-    // Validasi NIM Unique
     const isNimExist = mahasiswa.some((m) => m.nim === dataBaru.nim.trim());
     if (isNimExist) {
-      alert("NIM sudah terdaftar! Gunakan NIM lain.");
-      return;
+      toastError("NIM sudah terdaftar!");
+      return false;
     }
     setMahasiswa((prev) => [...prev, dataBaru]);
+    toastSuccess("Data berhasil ditambahkan");
+    return true;
   };
 
   const updateMahasiswa = (dataUpdate) => {
@@ -35,7 +36,6 @@ export default function MahasiswaPage() {
     setMahasiswa((prev) => prev.filter((m) => m.nim !== nim));
   };
 
-  // Handler Modal
   const openAddModal = () => {
     setSelectedMahasiswa(null);
     setModalOpen(true);
@@ -48,24 +48,26 @@ export default function MahasiswaPage() {
 
   const handleSubmit = (formData) => {
     if (selectedMahasiswa) {
-      const confirmUpdate = window.confirm(
-        "Apakah Anda yakin ingin memperbarui data mahasiswa ini?"
-      );
-      if (confirmUpdate) {
+      // Menggunakan confirmUpdate dari helper Notion
+      confirmUpdate(() => {
         updateMahasiswa(formData);
-      }
+        toastSuccess("Data berhasil diperbarui");
+        setModalOpen(false);
+      });
     } else {
-      storeMahasiswa(formData);
+      const isSuccess = storeMahasiswa(formData);
+      if (isSuccess) {
+        setModalOpen(false);
+      }
     }
   };
 
   const handleDelete = (nim) => {
-    const confirmDelete = window.confirm(
-      `Apakah Anda yakin ingin menghapus mahasiswa dengan NIM ${nim}?`
-    );
-    if (confirmDelete) {
+    // Menggunakan confirmDelete dari helper Notion
+    confirmDelete(() => {
       deleteMahasiswa(nim);
-    }
+      toastSuccess("Data berhasil dihapus");
+    });
   };
 
   return (
@@ -74,7 +76,7 @@ export default function MahasiswaPage() {
         <div>
           <h2 className="text-xl font-bold">Data Mahasiswa</h2>
           <p className="text-gray-500 text-sm">
-            Manajemen Data Mahasiswa menggunakan Props, State, dan useEffect
+            Manajemen Data Mahasiswa dengan Swal2 & react-hot-toast
           </p>
         </div>
         <Button
@@ -85,14 +87,12 @@ export default function MahasiswaPage() {
         </Button>
       </div>
 
-      {/* Komponen Tabel */}
       <MahasiswaTable
         mahasiswa={mahasiswa}
         openEditModal={openEditModal}
         onDelete={handleDelete}
       />
 
-      {/* Komponen Modal */}
       <MahasiswaModal
         isModalOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
