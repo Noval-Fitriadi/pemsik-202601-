@@ -1,11 +1,22 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { confirmLogout } from "@/Utils/Helpers/SwalHelpers";
 import Button from "@/Pages/Admin/Components/Button";
 
 const Header = () => {
+  const navigate = useNavigate();
   const toggleProfileMenu = () => {
     const menu = document.getElementById("profileMenu");
     if (menu) menu.classList.toggle("hidden");
   };
 
+  const handleLogout = () => {
+    confirmLogout(() => {
+      localStorage.removeItem("user");
+      toastSuccess("Berhasil Logout");
+      location.href = "/";
+    });
+  };
   return (
     <header className="bg-white shadow-md">
       <div className="flex justify-between items-center px-6 py-4">
@@ -21,14 +32,15 @@ const Header = () => {
             id="profileMenu"
             className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-2 hidden"
           >
-            <a href="#" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+            <a
+              href="#"
+              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            >
               Profile
             </a>
             <button
-              onClick={() => {
-                localStorage.removeItem("user"); // Menghapus data login dari LocalStorage
-                location.href = "/"; // Melempar kembali ke halaman login utama
-              }}
+              type="button"
+              onClick={handleLogout}
               className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
             >
               Logout

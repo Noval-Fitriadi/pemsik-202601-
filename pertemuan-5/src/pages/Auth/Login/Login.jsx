@@ -1,3 +1,4 @@
+import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +33,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(dummyUser));
       navigate("/admin");
     } else {
-      alert("Email atau password salah!");
+      toastError("Email atau password salah!")
     }
   };
 
