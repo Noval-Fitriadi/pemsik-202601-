@@ -6,10 +6,16 @@ export default function Sidebar() {
 
   const handleLogout = () => {
     confirmLogout(() => {
+      localStorage.removeItem("user");
       localStorage.removeItem("isLoggedIn");
       navigate("/login");
     });
   };
+
+  const navLinkClass = ({ isActive }) =>
+    `block px-4 py-2 rounded transition-colors ${
+      isActive ? "bg-blue-600 text-white font-semibold" : "hover:bg-slate-700 text-gray-300"
+    }`;
 
   return (
     <aside className="w-64 bg-slate-800 text-white min-h-screen p-4 flex flex-col justify-between">
@@ -18,25 +24,17 @@ export default function Sidebar() {
           Admin Panel
         </h1>
         <nav className="space-y-2">
-          <NavLink
-            to="/admin/dashboard"
-            className={({ isActive }) =>
-              `block px-4 py-2 rounded transition-colors ${
-                isActive ? "bg-blue-600 text-white font-semibold" : "hover:bg-slate-700 text-gray-300"
-              }`
-            }
-          >
+          <NavLink to="/admin/dashboard" className={navLinkClass}>
             Dashboard
           </NavLink>
-          <NavLink
-            to="/admin/mahasiswa"
-            className={({ isActive }) =>
-              `block px-4 py-2 rounded transition-colors ${
-                isActive ? "bg-blue-600 text-white font-semibold" : "hover:bg-slate-700 text-gray-300"
-              }`
-            }
-          >
+          <NavLink to="/admin/mahasiswa" className={navLinkClass}>
             Data Mahasiswa
+          </NavLink>
+          <NavLink to="/admin/dosen" className={navLinkClass}>
+            Data Dosen
+          </NavLink>
+          <NavLink to="/admin/matakuliah" className={navLinkClass}>
+            Data Mata Kuliah
           </NavLink>
         </nav>
       </div>
