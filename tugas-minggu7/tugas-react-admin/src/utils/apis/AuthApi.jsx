@@ -16,5 +16,9 @@ export const register = async (data) => {
     throw new Error("Email sudah terdaftar! Gunakan email lain.");
   }
 
-  return axios.post("/user", data);
+  return axios.post("/user", {
+    ...data,
+    role: "mahasiswa",
+    permission: ["dashboard.page"],
+  });
 };

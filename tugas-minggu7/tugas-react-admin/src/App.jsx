@@ -10,6 +10,7 @@ import MahasiswaPage from "./pages/MahasiswaPage";
 import DetailMahasiswaPage from "./pages/DetailMahasiswaPage";
 import DosenPage from "./pages/DosenPage";
 import MataKuliahPage from "./pages/MataKuliahPage";
+import UserPage from "./pages/UserPage";
 import ProtectedRoute from "./components/organisms/ProtectedRoute";
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
               <Route path="mahasiswa/:id" element={<DetailMahasiswaPage />} />
               <Route path="dosen" element={<DosenPage />} />
               <Route path="matakuliah" element={<MataKuliahPage />} />
+              <Route path="users" element={<UserPage />} />
             </Route>
           </Route>
         </Routes>

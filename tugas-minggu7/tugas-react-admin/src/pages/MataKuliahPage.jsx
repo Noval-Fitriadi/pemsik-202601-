@@ -9,6 +9,7 @@ import {
   updateMataKuliah,
   deleteMataKuliah,
 } from "../utils/apis/MataKuliahApi";
+import { useAuthStateContext } from "../utils/contexts/AuthContext";
 import { confirmDelete, confirmUpdate } from "../utils/helpers/SwalHelpers";
 import { toastSuccess, toastError } from "../utils/helpers/ToastHelpers";
 
@@ -16,6 +17,9 @@ export default function MataKuliahPage() {
   const [mataKuliah, setMataKuliah] = useState([]);
   const [selectedMataKuliah, setSelectedMataKuliah] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const { user } = useAuthStateContext();
+  const permissions = user?.permission || [];
 
   const fetchMataKuliah = async () => {
     try {
@@ -37,7 +41,7 @@ export default function MataKuliahPage() {
           await updateMataKuliah(selectedMataKuliah.id, {
             kode_mk: formData.kode_mk,
             nama_mk: formData.nama_mk,
-            sks: formData.sks,
+            sks: Number(formData.sks),
           });
           toastSuccess("Mata kuliah berhasil diperbarui");
           fetchMataKuliah();
@@ -91,25 +95,36 @@ export default function MataKuliahPage() {
             Manajemen Data Mata Kuliah dengan Modular Axios API
           </p>
         </div>
-        <Button
-          onClick={() => {
-            setSelectedMataKuliah(null);
-            setModalOpen(true);
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-        >
-          + Tambah Mata Kuliah
-        </Button>
+
+        {permissions.includes("matakuliah.create") && (
+          <Button
+            onClick={() => {
+              setSelectedMataKuliah(null);
+              setModalOpen(true);
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          >
+            + Tambah Mata Kuliah
+          </Button>
+        )}
       </div>
 
-      <MataKuliahTable
-        mataKuliah={mataKuliah}
-        openEditModal={(item) => {
-          setSelectedMataKuliah(item);
-          setModalOpen(true);
-        }}
-        onDelete={handleDelete}
-      />
+      {permissions.includes("matakuliah.read") ? (
+        <MataKuliahTable
+          mataKuliah={mataKuliah}
+          openEditModal={(item) => {
+            setSelectedMataKuliah(item);
+            setModalOpen(true);
+          }}
+          onDelete={handleDelete}
+          canUpdate={permissions.includes("matakuliah.update")}
+          canDelete={permissions.includes("matakuliah.delete")}
+        />
+      ) : (
+        <p className="text-red-500 text-sm">
+          Anda tidak memiliki izin untuk melihat data mata kuliah.
+        </p>
+      )}
 
       <MataKuliahModal
         isModalOpen={isModalOpen}

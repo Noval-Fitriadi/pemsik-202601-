@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Input from "../components/atoms/Input";
 import Label from "../components/atoms/Label";
 import Button from "../components/atoms/Button";
 import { login } from "../utils/apis/AuthApi";
+import { useAuthStateContext } from "../utils/contexts/AuthContext";
 import { toastSuccess, toastError } from "../utils/helpers/ToastHelpers";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
+  const { user, setUser } = useAuthStateContext();
   const navigate = useNavigate();
+
+  if (user) return <Navigate to="/admin/dashboard" replace />;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,11 +22,13 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const user = await login(form.email, form.password);
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("isLoggedIn", "true");
+      const loggedInUser = await login(form.email, form.password);
+      setUser(loggedInUser);
       toastSuccess("Login berhasil!");
-      navigate("/admin/dashboard");
+
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 10);
     } catch (err) {
       toastError(err.message || "Gagal terhubung ke server!");
     }

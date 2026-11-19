@@ -9,6 +9,7 @@ import {
   updateDosen,
   deleteDosen,
 } from "../utils/apis/DosenApi";
+import { useAuthStateContext } from "../utils/contexts/AuthContext";
 import { confirmDelete, confirmUpdate } from "../utils/helpers/SwalHelpers";
 import { toastSuccess, toastError } from "../utils/helpers/ToastHelpers";
 
@@ -16,6 +17,9 @@ export default function DosenPage() {
   const [dosen, setDosen] = useState([]);
   const [selectedDosen, setSelectedDosen] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const { user } = useAuthStateContext();
+  const permissions = user?.permission || [];
 
   const fetchDosen = async () => {
     try {
