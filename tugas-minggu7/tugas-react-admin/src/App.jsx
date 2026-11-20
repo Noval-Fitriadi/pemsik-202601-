@@ -10,13 +10,32 @@ import MahasiswaPage from "./pages/MahasiswaPage";
 import DetailMahasiswaPage from "./pages/DetailMahasiswaPage";
 import DosenPage from "./pages/DosenPage";
 import MataKuliahPage from "./pages/MataKuliahPage";
+import KelasPage from "./pages/KelasPage";
 import UserPage from "./pages/UserPage";
 import ProtectedRoute from "./components/organisms/ProtectedRoute";
 
 export default function App() {
   return (
     <>
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-right"
+        containerStyle={{
+          top: 75,
+          right: 24,
+          zIndex: 99999,
+        }}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#ffffff",
+            color: "#1f2937",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+            fontSize: "14px",
+          },
+        }}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -33,6 +52,7 @@ export default function App() {
               <Route path="mahasiswa/:id" element={<DetailMahasiswaPage />} />
               <Route path="dosen" element={<DosenPage />} />
               <Route path="matakuliah" element={<MataKuliahPage />} />
+              <Route path="kelas" element={<KelasPage />} />
               <Route path="users" element={<UserPage />} />
             </Route>
           </Route>

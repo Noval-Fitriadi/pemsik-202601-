@@ -41,6 +41,15 @@ const PERMISSION_GROUPS = [
     group: "Manajemen User",
     items: ["user.page", "user.read", "user.update", "user.delete"],
   },
+  {group: "Kelas",
+  items: [
+    "kelas.page",
+    "kelas.read",
+    "kelas.create",
+    "kelas.update",
+    "kelas.delete",
+    ],
+  },
 ];
 
 const ROLE_PRESETS = {

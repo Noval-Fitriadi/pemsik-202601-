@@ -1,54 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Card from "../components/molecules/Card";
 import Button from "../components/atoms/Button";
 import DosenTable from "../components/organisms/DosenTable";
 import DosenModal from "../components/organisms/DosenModal";
 import {
-  getAllDosen,
-  storeDosen,
-  updateDosen,
-  deleteDosen,
-} from "../utils/apis/DosenApi";
+  useDosen,
+  useStoreDosen,
+  useUpdateDosen,
+  useDeleteDosen,
+} from "../utils/hooks/useDosen";
 import { useAuthStateContext } from "../utils/contexts/AuthContext";
 import { confirmDelete, confirmUpdate } from "../utils/helpers/SwalHelpers";
-import { toastSuccess, toastError } from "../utils/helpers/ToastHelpers";
+import { toastError } from "../utils/helpers/ToastHelpers";
 
 export default function DosenPage() {
-  const [dosen, setDosen] = useState([]);
   const [selectedDosen, setSelectedDosen] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
   const { user } = useAuthStateContext();
   const permissions = user?.permission || [];
 
-  const fetchDosen = async () => {
-    try {
-      const res = await getAllDosen();
-      setDosen(res.data);
-    } catch (err) {
-      toastError("Gagal mengambil data dosen!");
-    }
-  };
+  const { data: dosen = [], isLoading } = useDosen();
+  const { mutate: store } = useStoreDosen();
+  const { mutate: update } = useUpdateDosen();
+  const { mutate: remove } = useDeleteDosen();
 
-  useEffect(() => {
-    fetchDosen();
-  }, []);
-
-  const handleSubmit = async (formData) => {
+  const handleSubmit = (formData) => {
     if (selectedDosen) {
-      confirmUpdate(async () => {
-        try {
-          await updateDosen(selectedDosen.id, {
+      confirmUpdate(() => {
+        update({
+          id: selectedDosen.id,
+          data: {
             nidn: formData.nidn,
             nama: formData.nama,
             bidang: formData.bidang,
-          });
-          toastSuccess("Data dosen berhasil diperbarui");
-          fetchDosen();
-          setModalOpen(false);
-        } catch (err) {
-          toastError("Gagal memperbarui data dosen!");
-        }
+          },
+        });
+        setModalOpen(false);
       });
     } else {
       const isExist = dosen.some((d) => d.nidn === formData.nidn.trim());
@@ -57,30 +45,18 @@ export default function DosenPage() {
         return;
       }
 
-      try {
-        await storeDosen({
-          nidn: formData.nidn.trim(),
-          nama: formData.nama.trim(),
-          bidang: formData.bidang.trim(),
-        });
-        toastSuccess("Data dosen berhasil ditambahkan");
-        fetchDosen();
-        setModalOpen(false);
-      } catch (err) {
-        toastError("Gagal menambahkan data dosen!");
-      }
+      store({
+        nidn: formData.nidn.trim(),
+        nama: formData.nama.trim(),
+        bidang: formData.bidang.trim(),
+      });
+      setModalOpen(false);
     }
   };
 
   const handleDelete = (id) => {
-    confirmDelete(async () => {
-      try {
-        await deleteDosen(id);
-        toastSuccess("Data dosen berhasil dihapus");
-        fetchDosen();
-      } catch (err) {
-        toastError("Gagal menghapus data dosen!");
-      }
+    confirmDelete(() => {
+      remove(id);
     });
   };
 
@@ -90,28 +66,41 @@ export default function DosenPage() {
         <div>
           <h2 className="text-xl font-bold">Data Dosen</h2>
           <p className="text-gray-500 text-sm">
-            Manajemen Data Dosen dengan Modular Axios API
+            Manajemen Data Dosen dengan React Query Hooks
           </p>
         </div>
-        <Button
-          onClick={() => {
-            setSelectedDosen(null);
-            setModalOpen(true);
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-        >
-          + Tambah Dosen
-        </Button>
+
+        {permissions.includes("dosen.create") && (
+          <Button
+            onClick={() => {
+              setSelectedDosen(null);
+              setModalOpen(true);
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          >
+            + Tambah Dosen
+          </Button>
+        )}
       </div>
 
-      <DosenTable
-        dosen={dosen}
-        openEditModal={(item) => {
-          setSelectedDosen(item);
-          setModalOpen(true);
-        }}
-        onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <p className="text-gray-500 text-sm">Memuat data dosen...</p>
+      ) : permissions.includes("dosen.read") ? (
+        <DosenTable
+          dosen={dosen}
+          openEditModal={(item) => {
+            setSelectedDosen(item);
+            setModalOpen(true);
+          }}
+          onDelete={handleDelete}
+          canUpdate={permissions.includes("dosen.update")}
+          canDelete={permissions.includes("dosen.delete")}
+        />
+      ) : (
+        <p className="text-red-500 text-sm">
+          Anda tidak memiliki izin untuk melihat data dosen.
+        </p>
+      )}
 
       <DosenModal
         isModalOpen={isModalOpen}

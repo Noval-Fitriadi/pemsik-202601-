@@ -57,6 +57,11 @@ export default function Sidebar() {
               Manajemen User
             </NavLink>
           )}
+          {permissions.includes("kelas.page") && (
+            <NavLink to="/admin/kelas" className={navLinkClass}>
+              Data Kelas
+            </NavLink>
+          )}
         </nav>
       </div>
 

@@ -13,6 +13,24 @@
       "bidang": "Sistem Informasi"
     }
   ],
+  "kelas": [
+    {
+      "kode_kelas": "A11.4502",
+      "nama_kelas": "Sistem Terdistribusi - B",
+      "mata_kuliah": "Pemrograman Sisi Klien",
+      "dosen": "Dr. Andi Wijaya, M.Kom.",
+      "ruangan": "H.5.1",
+      "id": "2"
+    },
+    {
+      "kode_kelas": "A11.4701",
+      "nama_kelas": "Pemrograman Sisi Klien - A",
+      "mata_kuliah": "Basis Data Lanjut",
+      "dosen": "Rina Kartika, S.Kom., M.Cs.",
+      "ruangan": "H.4.2",
+      "id": "dUhpyHbQ7Ms"
+    }
+  ],
   "mahasiswa": [
     {
       "id": "1",
@@ -25,6 +43,12 @@
       "nim": "A11.2020.00002",
       "nama": "Budi",
       "status": true
+    },
+    {
+      "nim": "20211002",
+      "nama": "Abed",
+      "status": true,
+      "id": "jVp-FTZLQGw"
     }
   ],
   "matakuliah": [
@@ -65,6 +89,11 @@
         "matakuliah.create",
         "matakuliah.update",
         "matakuliah.delete",
+        "kelas.page",
+        "kelas.read",
+        "kelas.create",
+        "kelas.update",
+        "kelas.delete",
         "user.page",
         "user.read",
         "user.update",
@@ -80,11 +109,7 @@
       "permission": [
         "dashboard.page",
         "mahasiswa.page",
-        "mahasiswa.read",
-        "matakuliah.page",
-        "matakuliah.read",
-        "dosen.page",
-        "dosen.read"
+        "mahasiswa.read"
       ]
     }
   ],
