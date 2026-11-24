@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Card from "../components/molecules/Card";
 import Button from "../components/atoms/Button";
+import TableToolbar from "../components/molecules/TableToolbar";
+import Pagination from "../components/molecules/Pagination";
 import DosenTable from "../components/organisms/DosenTable";
 import DosenModal from "../components/organisms/DosenModal";
 import {
@@ -17,10 +19,29 @@ export default function DosenPage() {
   const [selectedDosen, setSelectedDosen] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sortBy, setSortBy] = useState("nama");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [search, setSearch] = useState("");
+
   const { user } = useAuthStateContext();
   const permissions = user?.permission || [];
 
-  const { data: dosen = [], isLoading } = useDosen();
+  const {
+    data: result = { data: [], total: 0 },
+    isLoading: isLoadingDosen,
+  } = useDosen({
+    q: search,
+    _sort: sortBy,
+    _order: sortOrder,
+    _page: page,
+    _limit: limit,
+  });
+
+  const { data: dosen = [], total: totalCount } = result;
+  const totalPages = Math.ceil(totalCount / limit);
+
   const { mutate: store } = useStoreDosen();
   const { mutate: update } = useUpdateDosen();
   const { mutate: remove } = useDeleteDosen();
@@ -66,7 +87,7 @@ export default function DosenPage() {
         <div>
           <h2 className="text-xl font-bold">Data Dosen</h2>
           <p className="text-gray-500 text-sm">
-            Manajemen Data Dosen dengan React Query Hooks
+            Manajemen Data Dosen dengan React Query & Pagination
           </p>
         </div>
 
@@ -83,19 +104,60 @@ export default function DosenPage() {
         )}
       </div>
 
-      {isLoading ? (
-        <p className="text-gray-500 text-sm">Memuat data dosen...</p>
-      ) : permissions.includes("dosen.read") ? (
-        <DosenTable
-          dosen={dosen}
-          openEditModal={(item) => {
-            setSelectedDosen(item);
-            setModalOpen(true);
-          }}
-          onDelete={handleDelete}
-          canUpdate={permissions.includes("dosen.update")}
-          canDelete={permissions.includes("dosen.delete")}
-        />
+      {permissions.includes("dosen.read") ? (
+        <>
+          <TableToolbar
+            search={search}
+            onSearchChange={(val) => {
+              setSearch(val);
+              setPage(1);
+            }}
+            searchPlaceholder="Cari nama / NIDN / bidang dosen..."
+            sortBy={sortBy}
+            onSortByChange={(val) => {
+              setSortBy(val);
+              setPage(1);
+            }}
+            sortOptions={[
+              { value: "nama", label: "Sort by Nama" },
+              { value: "nidn", label: "Sort by NIDN" },
+              { value: "bidang", label: "Sort by Bidang" },
+            ]}
+            sortOrder={sortOrder}
+            onSortOrderChange={(val) => {
+              setSortOrder(val);
+              setPage(1);
+            }}
+            limit={limit}
+            onLimitChange={(val) => {
+              setLimit(val);
+              setPage(1);
+            }}
+          />
+
+          {isLoadingDosen ? (
+            <p className="text-gray-500 text-sm py-4">Memuat data dosen...</p>
+          ) : (
+            <DosenTable
+              dosen={dosen}
+              isLoading={isLoadingDosen}
+              openEditModal={(item) => {
+                setSelectedDosen(item);
+                setModalOpen(true);
+              }}
+              onDelete={handleDelete}
+              canUpdate={permissions.includes("dosen.update")}
+              canDelete={permissions.includes("dosen.delete")}
+            />
+          )}
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            onPageChange={setPage}
+          />
+        </>
       ) : (
         <p className="text-red-500 text-sm">
           Anda tidak memiliki izin untuk melihat data dosen.

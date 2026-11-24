@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import Input from "../atoms/Input";
-import Label from "../atoms/Label";
 import Button from "../atoms/Button";
 import { useMataKuliah } from "../../utils/hooks/useMataKuliah";
 import { useDosen } from "../../utils/hooks/useDosen";
@@ -20,8 +18,11 @@ export default function KelasModal({
     ruangan: "",
   });
 
-  const { data: daftarMataKuliah = [] } = useMataKuliah();
-  const { data: daftarDosen = [] } = useDosen();
+  const { data: mkResult = { data: [] } } = useMataKuliah();
+  const { data: dosenResult = { data: [] } } = useDosen();
+
+  const daftarMataKuliah = mkResult.data || [];
+  const daftarDosen = dosenResult.data || [];
 
   useEffect(() => {
     if (selectedKelas) {
@@ -73,28 +74,38 @@ export default function KelasModal({
         </h2>
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="kode_kelas">Kode Kelas</Label>
-            <Input
+            <label htmlFor="kode_kelas" className="block text-sm font-medium text-gray-700 mb-1">
+              Kode Kelas
+            </label>
+            <input
               id="kode_kelas"
               name="kode_kelas"
+              type="text"
               value={form.kode_kelas}
               onChange={handleChange}
               placeholder="Contoh: A11.4501"
               disabled={!!selectedKelas}
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
             />
           </div>
           <div>
-            <Label htmlFor="nama_kelas">Nama Kelas</Label>
-            <Input
+            <label htmlFor="nama_kelas" className="block text-sm font-medium text-gray-700 mb-1">
+              Nama Kelas
+            </label>
+            <input
               id="nama_kelas"
               name="nama_kelas"
+              type="text"
               value={form.nama_kelas}
               onChange={handleChange}
               placeholder="Contoh: Pemrograman Sisi Klien - A"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
-            <Label htmlFor="mata_kuliah">Mata Kuliah</Label>
+            <label htmlFor="mata_kuliah" className="block text-sm font-medium text-gray-700 mb-1">
+              Mata Kuliah
+            </label>
             <select
               id="mata_kuliah"
               name="mata_kuliah"
@@ -111,7 +122,9 @@ export default function KelasModal({
             </select>
           </div>
           <div>
-            <Label htmlFor="dosen">Dosen Pengampu</Label>
+            <label htmlFor="dosen" className="block text-sm font-medium text-gray-700 mb-1">
+              Dosen Pengampu
+            </label>
             <select
               id="dosen"
               name="dosen"
@@ -128,13 +141,17 @@ export default function KelasModal({
             </select>
           </div>
           <div>
-            <Label htmlFor="ruangan">Ruangan</Label>
-            <Input
+            <label htmlFor="ruangan" className="block text-sm font-medium text-gray-700 mb-1">
+              Ruangan
+            </label>
+            <input
               id="ruangan"
               name="ruangan"
+              type="text"
               value={form.ruangan}
               onChange={handleChange}
               placeholder="Contoh: H.4.2"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="flex justify-end space-x-2 pt-2">

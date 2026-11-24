@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
 
-export default function MahasiswaTable({ mahasiswa, openEditModal, onDelete }) {
-  const handleDelete = (nim) => {
-    onDelete(nim);
+export default function MahasiswaTable({
+  mahasiswa,
+  openEditModal,
+  onDelete,
+  canUpdate = true,
+  canDelete = true,
+}) {
+  const handleDelete = (id) => {
+    onDelete(id);
   };
 
   return (
@@ -26,7 +32,7 @@ export default function MahasiswaTable({ mahasiswa, openEditModal, onDelete }) {
           ) : (
             mahasiswa.map((item) => (
               <tr
-                key={item.nim}
+                key={item.id || item.nim}
                 className="even:bg-gray-50 odd:bg-white border-b hover:bg-gray-100 transition-colors"
               >
                 <td className="py-3 px-4 font-medium">{item.nim}</td>
@@ -49,18 +55,22 @@ export default function MahasiswaTable({ mahasiswa, openEditModal, onDelete }) {
                   >
                     Detail
                   </Link>
-                  <button
-                    onClick={() => openEditModal(item)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-2.5 py-1 rounded text-xs"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item.nim)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-xs"
-                  >
-                    Hapus
-                  </button>
+                  {canUpdate && (
+                    <button
+                      onClick={() => openEditModal(item)}
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-2.5 py-1 rounded text-xs"
+                    >
+                      Edit
+                    </button>
+                  )}
+                  {canDelete && (
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded text-xs"
+                    >
+                      Hapus
+                    </button>
+                  )}
                 </td>
               </tr>
             ))

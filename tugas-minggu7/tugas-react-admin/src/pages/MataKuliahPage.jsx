@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Card from "../components/molecules/Card";
 import Button from "../components/atoms/Button";
+import TableToolbar from "../components/molecules/TableToolbar";
+import Pagination from "../components/molecules/Pagination";
 import MataKuliahTable from "../components/organisms/MataKuliahTable";
 import MataKuliahModal from "../components/organisms/MataKuliahModal";
 import {
@@ -17,10 +19,29 @@ export default function MataKuliahPage() {
   const [selectedMataKuliah, setSelectedMataKuliah] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sortBy, setSortBy] = useState("kode_mk");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [search, setSearch] = useState("");
+
   const { user } = useAuthStateContext();
   const permissions = user?.permission || [];
 
-  const { data: mataKuliah = [], isLoading } = useMataKuliah();
+  const {
+    data: result = { data: [], total: 0 },
+    isLoading: isLoadingMK,
+  } = useMataKuliah({
+    q: search,
+    _sort: sortBy,
+    _order: sortOrder,
+    _page: page,
+    _limit: limit,
+  });
+
+  const { data: mataKuliah = [], total: totalCount } = result;
+  const totalPages = Math.ceil(totalCount / limit);
+
   const { mutate: store } = useStoreMataKuliah();
   const { mutate: update } = useUpdateMataKuliah();
   const { mutate: remove } = useDeleteMataKuliah();
@@ -69,7 +90,7 @@ export default function MataKuliahPage() {
         <div>
           <h2 className="text-xl font-bold">Data Mata Kuliah</h2>
           <p className="text-gray-500 text-sm">
-            Manajemen Data Mata Kuliah dengan React Query Hooks
+            Manajemen Data Mata Kuliah dengan React Query & Pagination
           </p>
         </div>
 
@@ -86,19 +107,60 @@ export default function MataKuliahPage() {
         )}
       </div>
 
-      {isLoading ? (
-        <p className="text-gray-500 text-sm">Memuat data mata kuliah...</p>
-      ) : permissions.includes("matakuliah.read") ? (
-        <MataKuliahTable
-          mataKuliah={mataKuliah}
-          openEditModal={(item) => {
-            setSelectedMataKuliah(item);
-            setModalOpen(true);
-          }}
-          onDelete={handleDelete}
-          canUpdate={permissions.includes("matakuliah.update")}
-          canDelete={permissions.includes("matakuliah.delete")}
-        />
+      {permissions.includes("matakuliah.read") ? (
+        <>
+          <TableToolbar
+            search={search}
+            onSearchChange={(val) => {
+              setSearch(val);
+              setPage(1);
+            }}
+            searchPlaceholder="Cari kode / nama mata kuliah..."
+            sortBy={sortBy}
+            onSortByChange={(val) => {
+              setSortBy(val);
+              setPage(1);
+            }}
+            sortOptions={[
+              { value: "kode_mk", label: "Sort by Kode MK" },
+              { value: "nama_mk", label: "Sort by Nama MK" },
+              { value: "sks", label: "Sort by SKS" },
+            ]}
+            sortOrder={sortOrder}
+            onSortOrderChange={(val) => {
+              setSortOrder(val);
+              setPage(1);
+            }}
+            limit={limit}
+            onLimitChange={(val) => {
+              setLimit(val);
+              setPage(1);
+            }}
+          />
+
+          {isLoadingMK ? (
+            <p className="text-gray-500 text-sm py-4">Memuat data mata kuliah...</p>
+          ) : (
+            <MataKuliahTable
+              mataKuliah={mataKuliah}
+              isLoading={isLoadingMK}
+              openEditModal={(item) => {
+                setSelectedMataKuliah(item);
+                setModalOpen(true);
+              }}
+              onDelete={handleDelete}
+              canUpdate={permissions.includes("matakuliah.update")}
+              canDelete={permissions.includes("matakuliah.delete")}
+            />
+          )}
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            onPageChange={setPage}
+          />
+        </>
       ) : (
         <p className="text-red-500 text-sm">
           Anda tidak memiliki izin untuk melihat data mata kuliah.

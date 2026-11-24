@@ -2,33 +2,89 @@
   "dosen": [
     {
       "id": "1",
-      "nidn": "0610018801",
-      "nama": "Dr. Andi Wijaya, M.Kom.",
+      "nidn": "0612048801",
+      "nama": "Dr. Budi Santoso, M.Kom",
       "bidang": "Rekayasa Perangkat Lunak"
     },
     {
       "id": "2",
-      "nidn": "0615049002",
-      "nama": "Rina Kartika, S.Kom., M.Cs.",
+      "nidn": "0615089002",
+      "nama": "Siti Aminah, S.Kom, M.Cs",
       "bidang": "Sistem Informasi"
+    },
+    {
+      "id": "3",
+      "nidn": "0621038503",
+      "nama": "Ahmad Fauzi, M.T",
+      "bidang": "Jaringan Komputer"
+    },
+    {
+      "id": "4",
+      "nidn": "0609119204",
+      "nama": "Rina Marlina, S.T, M.Kom",
+      "bidang": "Kecerdasan Buatan"
+    },
+    {
+      "id": "5",
+      "nidn": "0618078705",
+      "nama": "Hendra Wijaya, M.Kom",
+      "bidang": "Pemrograman Web"
+    },
+    {
+      "id": "6",
+      "nidn": "0627019106",
+      "nama": "Dewi Lestari, S.Kom, M.Eng",
+      "bidang": "Basis Data"
     }
   ],
   "kelas": [
     {
-      "kode_kelas": "A11.4502",
-      "nama_kelas": "Sistem Terdistribusi - B",
+      "id": "1",
+      "kode_kelas": "A11.4501",
+      "nama_kelas": "Pemrograman Sisi Klien - A",
       "mata_kuliah": "Pemrograman Sisi Klien",
-      "dosen": "Dr. Andi Wijaya, M.Kom.",
-      "ruangan": "H.5.1",
-      "id": "2"
+      "dosen": "Hendra Wijaya, M.Kom",
+      "ruangan": "H.4.2"
     },
     {
-      "kode_kelas": "A11.4701",
-      "nama_kelas": "Pemrograman Sisi Klien - A",
+      "id": "2",
+      "kode_kelas": "A11.4502",
+      "nama_kelas": "Pemrograman Sisi Server - B",
+      "mata_kuliah": "Pemrograman Sisi Server",
+      "dosen": "Dr. Budi Santoso, M.Kom",
+      "ruangan": "H.4.5"
+    },
+    {
+      "id": "3",
+      "kode_kelas": "A11.4503",
+      "nama_kelas": "Basis Data Lanjut - A",
       "mata_kuliah": "Basis Data Lanjut",
-      "dosen": "Rina Kartika, S.Kom., M.Cs.",
-      "ruangan": "H.4.2",
-      "id": "dUhpyHbQ7Ms"
+      "dosen": "Dewi Lestari, S.Kom, M.Eng",
+      "ruangan": "D.2.1"
+    },
+    {
+      "id": "4",
+      "kode_kelas": "A11.4504",
+      "nama_kelas": "Manajemen Proyek TI - C",
+      "mata_kuliah": "Manajemen Proyek TI",
+      "dosen": "Siti Aminah, S.Kom, M.Cs",
+      "ruangan": "H.5.1"
+    },
+    {
+      "id": "5",
+      "kode_kelas": "A11.4505",
+      "nama_kelas": "IMK - A",
+      "mata_kuliah": "Interaksi Manusia dan Komputer",
+      "dosen": "Rina Marlina, S.T, M.Kom",
+      "ruangan": "H.3.4"
+    },
+    {
+      "id": "6",
+      "kode_kelas": "A11.4506",
+      "nama_kelas": "Keamanan Siber - B",
+      "mata_kuliah": "Keamanan Siber",
+      "dosen": "Ahmad Fauzi, M.T",
+      "ruangan": "D.3.2"
     }
   ],
   "mahasiswa": [
@@ -45,24 +101,66 @@
       "status": true
     },
     {
-      "nim": "20211002",
-      "nama": "Abed",
-      "status": true,
-      "id": "jVp-FTZLQGw"
+      "id": "3",
+      "nim": "A11.2020.00003",
+      "nama": "Ando",
+      "status": true
+    },
+    {
+      "id": "4",
+      "nim": "A11.2020.00004",
+      "nama": "Citra",
+      "status": true
+    },
+    {
+      "id": "5",
+      "nim": "A11.2020.00005",
+      "nama": "Bagas",
+      "status": true
+    },
+    {
+      "id": "6",
+      "nim": "A11.2020.00006",
+      "nama": "Dewi",
+      "status": true
     }
   ],
   "matakuliah": [
     {
       "id": "1",
-      "kode_mk": "IF301",
+      "kode_mk": "A11.54301",
       "nama_mk": "Pemrograman Sisi Klien",
       "sks": 3
     },
     {
       "id": "2",
-      "kode_mk": "IF302",
+      "kode_mk": "A11.54302",
+      "nama_mk": "Pemrograman Sisi Server",
+      "sks": 3
+    },
+    {
+      "id": "3",
+      "kode_mk": "A11.54401",
       "nama_mk": "Basis Data Lanjut",
       "sks": 4
+    },
+    {
+      "id": "4",
+      "kode_mk": "A11.54502",
+      "nama_mk": "Manajemen Proyek TI",
+      "sks": 3
+    },
+    {
+      "id": "5",
+      "kode_mk": "A11.54601",
+      "nama_mk": "Interaksi Manusia dan Komputer",
+      "sks": 2
+    },
+    {
+      "id": "6",
+      "kode_mk": "A11.54703",
+      "nama_mk": "Keamanan Siber",
+      "sks": 3
     }
   ],
   "user": [
@@ -112,6 +210,5 @@
         "mahasiswa.read"
       ]
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }

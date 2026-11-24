@@ -1,14 +1,38 @@
 [
   {
     "id": "1",
-    "nidn": "0610018801",
-    "nama": "Dr. Andi Wijaya, M.Kom.",
+    "nidn": "0612048801",
+    "nama": "Dr. Budi Santoso, M.Kom",
     "bidang": "Rekayasa Perangkat Lunak"
   },
   {
     "id": "2",
-    "nidn": "0615049002",
-    "nama": "Rina Kartika, S.Kom., M.Cs.",
+    "nidn": "0615089002",
+    "nama": "Siti Aminah, S.Kom, M.Cs",
     "bidang": "Sistem Informasi"
+  },
+  {
+    "id": "3",
+    "nidn": "0621038503",
+    "nama": "Ahmad Fauzi, M.T",
+    "bidang": "Jaringan Komputer"
+  },
+  {
+    "id": "4",
+    "nidn": "0609119204",
+    "nama": "Rina Marlina, S.T, M.Kom",
+    "bidang": "Kecerdasan Buatan"
+  },
+  {
+    "id": "5",
+    "nidn": "0618078705",
+    "nama": "Hendra Wijaya, M.Kom",
+    "bidang": "Pemrograman Web"
+  },
+  {
+    "id": "6",
+    "nidn": "0627019106",
+    "nama": "Dewi Lestari, S.Kom, M.Eng",
+    "bidang": "Basis Data"
   }
 ]
