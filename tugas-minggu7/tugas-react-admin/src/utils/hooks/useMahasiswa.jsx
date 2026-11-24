@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import {
   getAllMahasiswa,
   storeMahasiswa,
@@ -7,11 +12,15 @@ import {
 } from "../apis/MahasiswaApi";
 import { toastSuccess, toastError } from "../helpers/ToastHelpers";
 
-export const useMahasiswa = () =>
+export const useMahasiswa = (query = {}) =>
   useQuery({
-    queryKey: ["mahasiswa"],
-    queryFn: getAllMahasiswa,
-    select: (res) => res?.data ?? [],
+    queryKey: ["mahasiswa", query],
+    queryFn: () => getAllMahasiswa(query),
+    select: (res) => ({
+      data: res?.data ?? [],
+      total: parseInt(res.headers["x-total-count"] ?? "0", 10),
+    }),
+    placeholderData: keepPreviousData,
   });
 
 export const useStoreMahasiswa = () => {

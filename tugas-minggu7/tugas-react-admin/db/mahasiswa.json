@@ -10,5 +10,29 @@
     "nim": "A11.2020.00002",
     "nama": "Budi",
     "status": true
+  },
+  {
+    "id": "3",
+    "nim": "A11.2020.00003",
+    "nama": "Ando",
+    "status": true
+  },
+  {
+    "id": "4",
+    "nim": "A11.2020.00004",
+    "nama": "Citra",
+    "status": true
+  },
+  {
+    "id": "5",
+    "nim": "A11.2020.00005",
+    "nama": "Bagas",
+    "status": true
+  },
+  {
+    "id": "6",
+    "nim": "A11.2020.00006",
+    "nama": "Dewi",
+    "status": true
   }
 ]

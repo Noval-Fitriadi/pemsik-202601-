@@ -1,4 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 import {
   getAllKelas,
   storeKelas,
@@ -7,11 +12,15 @@ import {
 } from "../apis/KelasApi";
 import { toastSuccess, toastError } from "../helpers/ToastHelpers";
 
-export const useKelas = () =>
+export const useKelas = (query = {}) =>
   useQuery({
-    queryKey: ["kelas"],
-    queryFn: getAllKelas,
-    select: (res) => res?.data ?? [],
+    queryKey: ["kelas", query],
+    queryFn: () => getAllKelas(query),
+    select: (res) => ({
+      data: res?.data ?? [],
+      total: parseInt(res.headers["x-total-count"] ?? "0", 10),
+    }),
+    placeholderData: keepPreviousData,
   });
 
 export const useStoreKelas = () => {
@@ -32,7 +41,7 @@ export const useUpdateKelas = () => {
     mutationFn: ({ id, data }) => updateKelas(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["kelas"] });
-      toastSuccess("Data kelas berhasil diperbarui!"); 
+      toastSuccess("Data kelas berhasil diperbarui!");
     },
     onError: () => toastError("Gagal memperbarui data kelas."),
   });
@@ -44,7 +53,7 @@ export const useDeleteKelas = () => {
     mutationFn: deleteKelas,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["kelas"] });
-      toastSuccess("Data kelas berhasil dihapus!"); 
+      toastSuccess("Data kelas berhasil dihapus!");
     },
     onError: () => toastError("Gagal menghapus data kelas."),
   });

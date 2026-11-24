@@ -4,15 +4,47 @@
     "kode_kelas": "A11.4501",
     "nama_kelas": "Pemrograman Sisi Klien - A",
     "mata_kuliah": "Pemrograman Sisi Klien",
-    "dosen": "Dr. Budi Santoso, M.Kom",
+    "dosen": "Hendra Wijaya, M.Kom",
     "ruangan": "H.4.2"
   },
   {
     "id": "2",
     "kode_kelas": "A11.4502",
-    "nama_kelas": "Sistem Terdistribusi - B",
-    "mata_kuliah": "Sistem Terdistribusi",
-    "dosen": "Siti Aminah, M.T",
+    "nama_kelas": "Pemrograman Sisi Server - B",
+    "mata_kuliah": "Pemrograman Sisi Server",
+    "dosen": "Dr. Budi Santoso, M.Kom",
+    "ruangan": "H.4.5"
+  },
+  {
+    "id": "3",
+    "kode_kelas": "A11.4503",
+    "nama_kelas": "Basis Data Lanjut - A",
+    "mata_kuliah": "Basis Data Lanjut",
+    "dosen": "Dewi Lestari, S.Kom, M.Eng",
+    "ruangan": "D.2.1"
+  },
+  {
+    "id": "4",
+    "kode_kelas": "A11.4504",
+    "nama_kelas": "Manajemen Proyek TI - C",
+    "mata_kuliah": "Manajemen Proyek TI",
+    "dosen": "Siti Aminah, S.Kom, M.Cs",
     "ruangan": "H.5.1"
+  },
+  {
+    "id": "5",
+    "kode_kelas": "A11.4505",
+    "nama_kelas": "IMK - A",
+    "mata_kuliah": "Interaksi Manusia dan Komputer",
+    "dosen": "Rina Marlina, S.T, M.Kom",
+    "ruangan": "H.3.4"
+  },
+  {
+    "id": "6",
+    "kode_kelas": "A11.4506",
+    "nama_kelas": "Keamanan Siber - B",
+    "mata_kuliah": "Keamanan Siber",
+    "dosen": "Ahmad Fauzi, M.T",
+    "ruangan": "D.3.2"
   }
 ]

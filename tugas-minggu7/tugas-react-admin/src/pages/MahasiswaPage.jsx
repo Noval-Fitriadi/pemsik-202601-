@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Card from "../components/molecules/Card";
 import Button from "../components/atoms/Button";
+import TableToolbar from "../components/molecules/TableToolbar";
+import Pagination from "../components/molecules/Pagination";
 import MahasiswaTable from "../components/organisms/MahasiswaTable";
 import MahasiswaModal from "../components/organisms/MahasiswaModal";
 import {
@@ -17,10 +19,29 @@ export default function MahasiswaPage() {
   const [selectedMahasiswa, setSelectedMahasiswa] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [sortBy, setSortBy] = useState("nama");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [search, setSearch] = useState("");
+
   const { user } = useAuthStateContext();
   const permissions = user?.permission || [];
 
-  const { data: mahasiswa = [], isLoading } = useMahasiswa();
+  const {
+    data: result = { data: [], total: 0 },
+    isLoading: isLoadingMahasiswa,
+  } = useMahasiswa({
+    q: search,
+    _sort: sortBy,
+    _order: sortOrder,
+    _page: page,
+    _limit: limit,
+  });
+
+  const { data: mahasiswa = [], total: totalCount } = result;
+  const totalPages = Math.ceil(totalCount / limit);
+
   const { mutate: store } = useStoreMahasiswa();
   const { mutate: update } = useUpdateMahasiswa();
   const { mutate: remove } = useDeleteMahasiswa();
@@ -58,7 +79,7 @@ export default function MahasiswaPage() {
         <div>
           <h2 className="text-xl font-bold">Data Mahasiswa</h2>
           <p className="text-gray-500 text-sm">
-            Manajemen Data Mahasiswa dengan React Query Hooks
+            Manajemen Data Mahasiswa dengan React Query & Pagination
           </p>
         </div>
 
@@ -75,19 +96,59 @@ export default function MahasiswaPage() {
         )}
       </div>
 
-      {isLoading ? (
-        <p className="text-gray-500 text-sm">Memuat data mahasiswa...</p>
-      ) : permissions.includes("mahasiswa.read") ? (
-        <MahasiswaTable
-          mahasiswa={mahasiswa}
-          openEditModal={(item) => {
-            setSelectedMahasiswa(item);
-            setModalOpen(true);
-          }}
-          onDelete={handleDelete}
-          canUpdate={permissions.includes("mahasiswa.update")}
-          canDelete={permissions.includes("mahasiswa.delete")}
-        />
+      {permissions.includes("mahasiswa.read") ? (
+        <>
+          <TableToolbar
+            search={search}
+            onSearchChange={(val) => {
+              setSearch(val);
+              setPage(1);
+            }}
+            searchPlaceholder="Cari nama / NIM mahasiswa..."
+            sortBy={sortBy}
+            onSortByChange={(val) => {
+              setSortBy(val);
+              setPage(1);
+            }}
+            sortOptions={[
+              { value: "nama", label: "Sort by Nama" },
+              { value: "nim", label: "Sort by NIM" },
+            ]}
+            sortOrder={sortOrder}
+            onSortOrderChange={(val) => {
+              setSortOrder(val);
+              setPage(1);
+            }}
+            limit={limit}
+            onLimitChange={(val) => {
+              setLimit(val);
+              setPage(1);
+            }}
+          />
+
+          {isLoadingMahasiswa ? (
+            <p className="text-gray-500 text-sm py-4">Memuat data mahasiswa...</p>
+          ) : (
+            <MahasiswaTable
+              mahasiswa={mahasiswa}
+              isLoading={isLoadingMahasiswa}
+              openEditModal={(item) => {
+                setSelectedMahasiswa(item);
+                setModalOpen(true);
+              }}
+              onDelete={handleDelete}
+              canUpdate={permissions.includes("mahasiswa.update")}
+              canDelete={permissions.includes("mahasiswa.delete")}
+            />
+          )}
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            totalCount={totalCount}
+            onPageChange={setPage}
+          />
+        </>
       ) : (
         <p className="text-red-500 text-sm">
           Anda tidak memiliki izin untuk melihat data mahasiswa.
