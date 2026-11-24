@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "kode_mk": "IF301",
+    "nama_mk": "Pemrograman Sisi Klien",
+    "sks": 3
+  },
+  {
+    "id": "2",
+    "kode_mk": "IF302",
+    "nama_mk": "Basis Data Lanjut",
+    "sks": 4
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "kode_kelas": "A11.4501",
+    "nama_kelas": "Pemrograman Sisi Klien - A",
+    "mata_kuliah": "Pemrograman Sisi Klien",
+    "dosen": "Dr. Budi Santoso, M.Kom",
+    "ruangan": "H.4.2"
+  },
+  {
+    "id": "2",
+    "kode_kelas": "A11.4502",
+    "nama_kelas": "Sistem Terdistribusi - B",
+    "mata_kuliah": "Sistem Terdistribusi",
+    "dosen": "Siti Aminah, M.T",
+    "ruangan": "H.5.1"
+  }
+]

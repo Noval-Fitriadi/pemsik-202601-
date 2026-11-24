@@ -1,0 +1,117 @@
+{
+  "dosen": [
+    {
+      "id": "1",
+      "nidn": "0610018801",
+      "nama": "Dr. Andi Wijaya, M.Kom.",
+      "bidang": "Rekayasa Perangkat Lunak"
+    },
+    {
+      "id": "2",
+      "nidn": "0615049002",
+      "nama": "Rina Kartika, S.Kom., M.Cs.",
+      "bidang": "Sistem Informasi"
+    }
+  ],
+  "kelas": [
+    {
+      "kode_kelas": "A11.4502",
+      "nama_kelas": "Sistem Terdistribusi - B",
+      "mata_kuliah": "Pemrograman Sisi Klien",
+      "dosen": "Dr. Andi Wijaya, M.Kom.",
+      "ruangan": "H.5.1",
+      "id": "2"
+    },
+    {
+      "kode_kelas": "A11.4701",
+      "nama_kelas": "Pemrograman Sisi Klien - A",
+      "mata_kuliah": "Basis Data Lanjut",
+      "dosen": "Rina Kartika, S.Kom., M.Cs.",
+      "ruangan": "H.4.2",
+      "id": "dUhpyHbQ7Ms"
+    }
+  ],
+  "mahasiswa": [
+    {
+      "id": "1",
+      "nim": "A11.2020.00001",
+      "nama": "Andi",
+      "status": true
+    },
+    {
+      "id": "2",
+      "nim": "A11.2020.00002",
+      "nama": "Budi",
+      "status": true
+    },
+    {
+      "nim": "20211002",
+      "nama": "Abed",
+      "status": true,
+      "id": "jVp-FTZLQGw"
+    }
+  ],
+  "matakuliah": [
+    {
+      "id": "1",
+      "kode_mk": "IF301",
+      "nama_mk": "Pemrograman Sisi Klien",
+      "sks": 3
+    },
+    {
+      "id": "2",
+      "kode_mk": "IF302",
+      "nama_mk": "Basis Data Lanjut",
+      "sks": 4
+    }
+  ],
+  "user": [
+    {
+      "id": "1",
+      "name": "Admin 1",
+      "email": "admin@mail.com",
+      "password": "admin123",
+      "role": "admin",
+      "permission": [
+        "dashboard.page",
+        "mahasiswa.page",
+        "mahasiswa.read",
+        "mahasiswa.create",
+        "mahasiswa.update",
+        "mahasiswa.delete",
+        "dosen.page",
+        "dosen.read",
+        "dosen.create",
+        "dosen.update",
+        "dosen.delete",
+        "matakuliah.page",
+        "matakuliah.read",
+        "matakuliah.create",
+        "matakuliah.update",
+        "matakuliah.delete",
+        "kelas.page",
+        "kelas.read",
+        "kelas.create",
+        "kelas.update",
+        "kelas.delete",
+        "user.page",
+        "user.read",
+        "user.update",
+        "user.delete"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Mahasiswa 1",
+      "email": "mahasiswa@mail.com",
+      "password": "mahasiswa123",
+      "role": "mahasiswa",
+      "permission": [
+        "dashboard.page",
+        "mahasiswa.page",
+        "mahasiswa.read"
+      ]
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

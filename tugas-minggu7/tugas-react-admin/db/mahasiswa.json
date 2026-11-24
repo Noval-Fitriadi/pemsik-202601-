@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "nim": "A11.2020.00001",
+    "nama": "Andi",
+    "status": true
+  },
+  {
+    "id": "2",
+    "nim": "A11.2020.00002",
+    "nama": "Budi",
+    "status": true
+  }
+]
