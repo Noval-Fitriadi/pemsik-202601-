@@ -1,14 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  // Menyesuaikan localStorage "isLoggedIn" dari instruksi PDF tugas
-  const isAuth = localStorage.getItem("isLoggedIn") === "true";
+  const isAuth = localStorage.getItem("user");
 
   if (!isAuth) {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />; // Merender rute halaman admin di dalamnya
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

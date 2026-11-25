@@ -1,33 +1,43 @@
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Card from "../Components/Card";
-import Heading from "../Components/Heading";
-import Button from "../Components/Button";
-import { mahasiswaList } from "@/data/Dummy";
+import { getMahasiswa } from "@/Utils/Apis/MahasiswaApi";
+import { toastError } from "@/Utils/Helpers/ToastHelpers";
+import Button from "@/Pages/Admin/Components/Button";
+import Card from "@/Pages/Admin/Components/Card";
 
 const MahasiswaDetail = () => {
-  const { nim } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [mahasiswa, setMahasiswa] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const data = mahasiswaList.find((m) => m.nim === nim);
+  useEffect(() => {
+    const fetchMahasiswa = async () => {
+      try {
+        const res = await getMahasiswa(id);
+        setMahasiswa(res.data);
+      } catch (err) {
+        toastError("Gagal mengambil data mahasiswa");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!data) {
-    return (
-      <Card>
-        <Heading as="h2">Data Mahasiswa Tidak Ditemukan</Heading>
-        <Button onClick={() => navigate("/admin/mahasiswa")}>Kembali</Button>
-      </Card>
-    );
-  }
+    fetchMahasiswa();
+  }, [id]);
+
+  if (loading) return <p className="text-center">Memuat data...</p>;
+  if (!mahasiswa) return <p className="text-center">Data tidak ditemukan</p>;
 
   return (
     <Card>
-      <Heading as="h2">Detail Mahasiswa</Heading>
-      <div className="space-y-2 my-4">
-        <p><strong>NIM:</strong> {data.nim}</p>
-        <p><strong>Nama:</strong> {data.nama}</p>
-        {data.prodi && <p><strong>Program Studi:</strong> {data.prodi}</p>}
+      <h2 className="text-xl font-bold mb-4">Detail Mahasiswa</h2>
+      <p><strong>ID:</strong> {mahasiswa.id}</p>
+      <p><strong>NIM:</strong> {mahasiswa.nim}</p>
+      <p><strong>Nama:</strong> {mahasiswa.nama}</p>
+      <div className="mt-4">
+        <Button onClick={() => navigate("/admin/mahasiswa")}>Kembali</Button>
       </div>
-      <Button onClick={() => navigate("/admin/mahasiswa")}>Kembali</Button>
     </Card>
   );
 };

@@ -27,7 +27,7 @@ export default function App() {
             {/* Nested Routes Mahasiswa sesuai standar modul Notion */}
             <Route path="mahasiswa">
               <Route index element={<Mahasiswa />} />
-              <Route path=":nim" element={<MahasiswaDetail />} />
+              <Route path=":id" element={<MahasiswaDetail />} />
             </Route>
           </Route>
         </Route>

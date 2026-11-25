@@ -3,14 +3,16 @@ import Swal from "sweetalert2";
 export const confirmLogout = (onConfirm) => {
   Swal.fire({
     title: "Yakin ingin logout?",
+    text: "Sesi kamu akan diakhiri.",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Ya, logout",
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Ya, Logout",
     cancelButtonText: "Batal",
   }).then((result) => {
-    if (result.isConfirmed) {
+    if (result.isConfirmed && onConfirm) {
       onConfirm();
-      Swal.fire("Logout berhasil", "", "success");
     }
   });
 };
@@ -18,6 +20,7 @@ export const confirmLogout = (onConfirm) => {
 export const confirmDelete = (onConfirm) => {
   Swal.fire({
     title: "Yakin ingin menghapus data ini?",
+    text: "Data yang dihapus tidak dapat dikembalikan.",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Ya, hapus",

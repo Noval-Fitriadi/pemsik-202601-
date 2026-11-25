@@ -1,82 +1,78 @@
-import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import Input from "@/Pages/Auth/Components/Input";
-import Label from "@/Pages/Auth/Components/Label";
-import Button from "@/Pages/Auth/Components/Button";
-import Link from "@/Pages/Auth/Components/Link";
-import Card from "@/Pages/Auth/Components/Card";
-import Heading from "@/Pages/Auth/Components/Heading";
-import Form from "@/Pages/Auth/Components/Form";
-
-import { dummyUser } from "@/data/Dummy";
+import { login } from "@/Utils/Apis/AuthApi";
+import { toastSuccess, toastError } from "@/Utils/Helpers/ToastHelpers";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = form;
 
-    if (email === dummyUser.email && password === dummyUser.password) {
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("user", JSON.stringify(dummyUser));
-      navigate("/admin");
-    } else {
-      toastError("Email atau password salah!")
+    try {
+      const user = await login(email, password);
+      localStorage.setItem("user", JSON.stringify(user));
+      toastSuccess("Login berhasil!");
+      navigate("/admin/dashboard");
+    } catch (err) {
+      toastError(err.message);
     }
   };
 
   return (
-    <Card className="max-w-md">
-      <Heading as="h2">Login</Heading>
-      <Form onSubmit={handleSubmit}>
+    <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        Login
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <input
             type="email"
             name="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="Masukkan email"
+            placeholder="admin@mail.com"
             required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="mt-4">
-          <Label htmlFor="password">Password</Label>
-          <Input
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Password
+          </label>
+          <input
             type="password"
             name="password"
             value={form.password}
             onChange={handleChange}
-            placeholder="Masukkan password"
+            placeholder="••••••••"
             required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2" />
-            <span className="text-sm text-gray-600">Ingat saya</span>
-          </label>
-          <Link href="#" className="text-sm">
-            Lupa password?
-          </Link>
-        </div>
-        <Button type="submit" className="w-full mt-6">
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition"
+        >
           Login
-        </Button>
-      </Form>
-    </Card>
+        </button>
+      </form>
+    </div>
   );
 };
 

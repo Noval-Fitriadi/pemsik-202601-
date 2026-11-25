@@ -13,8 +13,8 @@ const Header = () => {
   const handleLogout = () => {
     confirmLogout(() => {
       localStorage.removeItem("user");
-      toastSuccess("Berhasil Logout");
-      location.href = "/";
+      toastSuccess("Logout berhasil!");
+      navigate("/login");
     });
   };
   return (
